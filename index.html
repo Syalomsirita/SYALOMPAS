@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penerima Angka Ilmiah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Garuda_Pancasila%2C_Coat_of_Arms_of_Indonesia.svg/800px-Garuda_Pancasila%2C_Coat_of_Arms_of_Indonesia.svg.png') no-repeat center center fixed;
+            background-size: contain;
+            text-align: center;
+            color: white;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            border: 2px solid red;
+            background-color: purple;
+        }
+        nav a {
+            padding: 10px 20px;
+            border-right: 2px solid red;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        nav a:last-child {
+            border-right: none;
+        }
+        .container {
+            margin-top: 50px;
+            background: rgba(255, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        input, textarea {
+            width: 50%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid purple;
+            text-align: center;
+            font-size: 18px;
+            color: purple;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: purple;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: red;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a onclick="showSection('fileSection')">File</a>
+        <a onclick="showSection('editSection')">Edit</a>
+        <a onclick="showSection('runSection')">Run</a>
+        <a onclick="showSection('aboutSection')">About us</a>
+    </nav>
+    
+    <div id="fileSection" class="container hidden">
+        <h2>Upload File:</h2>
+        <input type="file" id="fileInput" onchange="loadFile()">
+        <pre id="fileContent">File content will appear here...</pre>
+    </div>
+    
+    <div id="editSection" class="container hidden">
+        <h2>Edit Input:</h2>
+        <textarea id="editor">Tulis sesuatu di sini...</textarea>
+    </div>
+    
+    <div id="runSection" class="container">
+        <h2>Input string:</h2>
+        <input type="text" id="inputNumber" placeholder="1.23e+3">
+        <br>
+        <button onclick="validateNumber()">Run</button>
+        <h2>Message:</h2>
+        <p id="message"></p>
+    </div>
+    
+    <div id="aboutSection" class="container hidden">
+        <h2>About Us</h2>
+        <p>Website ini dibuat untuk memvalidasi angka ilmiah dan memberikan pengalaman interaktif.</p>
+    </div>
+
+    <script>
+        function validateNumber() {
+            const input = document.getElementById("inputNumber").value.trim();
+            const regex = /^[+-]?\d+(\.\d+)?(e[+-]?\d+)?$/i;
+            const message = document.getElementById("message");
+            
+            if (regex.test(input)) {
+                message.textContent = "Yes, it is a number";
+                message.style.color = "white";
+            } else {
+                message.textContent = "No, it is not a number";
+                message.style.color = "yellow";
+            }
+        }
+
+        function loadFile() {
+            const fileInput = document.getElementById("fileInput");
+            const fileContent = document.getElementById("fileContent");
+            const reader = new FileReader();
+            
+            reader.onload = function() {
+                fileContent.textContent = reader.result;
+            }
+            
+            if (fileInput.files.length > 0) {
+                reader.readAsText(fileInput.files[0]);
+            }
+        }
+        
+        function showSection(sectionId) {
+            document.querySelectorAll(".container").forEach(section => {
+                section.classList.add("hidden");
+            });
+            document.getElementById(sectionId).classList.remove("hidden");
+        }
+    </script>
+</body>
+</html>
